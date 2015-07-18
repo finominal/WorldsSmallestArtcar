@@ -33,7 +33,7 @@ void DisplayLed(long col)
   strip.show();
 }
 
-
+/*
 void PulseYellowLed()
 {
   digitalWrite(1,HIGH);
@@ -52,4 +52,4 @@ void flashes(int r)
   delay(300);
   }
 }
-
+*/
