@@ -11,45 +11,34 @@ int busyPin = 5;  // The pin number of the busy pin.
 
 Wtv020sd16p wtv020sd16p(resetPin,clockPin,dataPin,busyPin);
 
-unsigned short eepromAddress = 0;
 
-unsigned int track = 0; 
-int totalTracks = 2;
-int data = 2;
 
-int currentLedProgram = 0;
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, 8, NEO_GRB + NEO_KHZ400);
+int numLeds = 3;
+int ledPin = 9;
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(numLeds, ledPin, NEO_GRB + NEO_KHZ800);
 int  brightness = 64;
  
 void setup(void)
 {
   Serial.begin(9600);
   Serial.println("## Starting ##");
- // pinMode(1,OUTPUT);
+ 
+ // pinMode(1,OUTPUT); yellow led on the attiny
 
   strip.begin();
   strip.show();
 
-  track = GetTrack();
-  Serial.print("Playing Track: ");Serial.println(track);
+  PlayNextTrack();
 
-  wtv020sd16p.reset();
-  Serial.println("Reset Audio");
-  delay(500);
-  //wtv020sd16p.setVolume(0xFFF4); 
-  delay(500);
-  wtv020sd16p.asyncPlayVoice(track);
-  Serial.println("Play Audio");
 }
 
 void loop()
 {
-  Serial.print("Loop: ");Serial.println(millis());
+  //Serial.print("Loop: ");Serial.println(millis());
   AnimateLed();
-//  PulseYellowLed();
-delay(1000);
-serialEvent();
+  serialEvent();//look for incoming track change via serial
+  CheckForTrackChange();//look for end of track;
 }
 
 
