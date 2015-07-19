@@ -1,4 +1,5 @@
 #include <Wtv020sd16p.h>
+
 #include <Adafruit_NeoPixel.h>
 //#include "DigiKeyboard.h"
 #include "EEPROM.h"
@@ -12,8 +13,8 @@ Wtv020sd16p wtv020sd16p(resetPin,clockPin,dataPin,busyPin);
 
 unsigned short eepromAddress = 0;
 
-unsigned int track = 4; 
-int totalTracks = 9;
+unsigned int track = 0; 
+int totalTracks = 2;
 int data = 2;
 
 int currentLedProgram = 0;
@@ -31,12 +32,14 @@ void setup(void)
   strip.show();
 
   track = GetTrack();
-  Serial.print("Track: ");Serial.println(track);
+  Serial.print("Playing Track: ");Serial.println(track);
 
   wtv020sd16p.reset();
   Serial.println("Reset Audio");
   delay(500);
-  wtv020sd16p.asyncPlayVoice(0);
+  //wtv020sd16p.setVolume(0xFFF4); 
+  delay(500);
+  wtv020sd16p.asyncPlayVoice(track);
   Serial.println("Play Audio");
 }
 
@@ -46,6 +49,7 @@ void loop()
   AnimateLed();
 //  PulseYellowLed();
 delay(1000);
+serialEvent();
 }
 
 
